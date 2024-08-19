@@ -19,14 +19,14 @@ public class Carros
         // Para que o preço final não fique baixo, vou fazer
         // com que os segundos sejam representados como minutos
         // e os minutos como horas
-        HorasEstacionado = (DateTime.Now - Entrada).Hours;
-        MinutosEstacionado = (DateTime.Now - Entrada).Minutes;
+        HorasEstacionado = (DateTime.Now - Entrada).Minutes;
+        MinutosEstacionado = (DateTime.Now - Entrada).Seconds;
     }
 
     public void MostraTempoEstacionado()
     {
         AtualizaTempo();
-        Console.WriteLine($"{Placa}\t{HorasEstacionado}:{MinutosEstacionado}");
+        Console.WriteLine($"{Placa}\t{HorasEstacionado:D2}:{MinutosEstacionado:D2}");
     }
     
     public (string, decimal) ProcessaSaida(decimal precoInicial, decimal precoPorHora)
