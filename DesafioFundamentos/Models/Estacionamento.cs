@@ -4,14 +4,28 @@ namespace DesafioFundamentos.Models
     {
         private decimal precoInicial = 0;
         private decimal precoPorHora = 0;
+        private int capacidade;
         private List<Carros> veiculos = new List<Carros>();
 
-        public Estacionamento(decimal precoInicial, decimal precoPorHora)
+        public Estacionamento(decimal precoInicial, decimal precoPorHora, int capacidade)
         {
             this.precoInicial = precoInicial;
             this.precoPorHora = precoPorHora;
+            this.capacidade = capacidade;
         }
         
+        public void MostraMenu()
+        {
+            var vagasDisponiveis = capacidade - veiculos.Count;
+            var text = vagasDisponiveis == 0 ? "LOTADO" : $"(Há {vagasDisponiveis} vagas disponíveis)";
+            Console.Clear();
+            Console.WriteLine("Digite a sua opção:");
+            Console.WriteLine($"1 - Cadastrar veículo {text}");
+            Console.WriteLine("2 - Remover veículo");
+            Console.WriteLine("3 - Listar veículos");
+            Console.WriteLine("4 - Encerrar");
+        }
+
         public static string PegaPlaca(string motivo)
         {
             Console.WriteLine($"Digite a placa do veículo para {motivo}:");
@@ -20,6 +34,11 @@ namespace DesafioFundamentos.Models
 
         public void AdicionarVeiculo()
         {
+            if (veiculos.Count == capacidade)
+            {
+                Console.WriteLine("Desculpe, o estacionamento está lotado.");
+                return;
+            }
             var carro = new Carros(PegaPlaca("adicionar"));
             veiculos.Add(carro);
         }
