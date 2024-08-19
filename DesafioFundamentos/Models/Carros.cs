@@ -4,6 +4,8 @@ public class Carros
 {
     public string Placa { get; set; }
     public DateTime Entrada { get; set; }
+    public int HorasEstacionado { get; set; }
+    public int MinutosEstacionado { get; set; }
     
     public Carros(string placa)
     {
@@ -11,14 +13,26 @@ public class Carros
         Entrada = DateTime.Now;
     }
     
-    public void MostraTempoEstacionado()
+    private void AtualizaTempo()
     {
         // Calcula o tempo que o carro ficou estacionado.
         // Para que o preço final não fique baixo, vou fazer
         // com que os segundos sejam representados como minutos
         // e os minutos como horas
-        var minutos = (DateTime.Now - Entrada).Seconds;
-        var horas = (DateTime.Now - Entrada).Minutes;
-        Console.WriteLine($"{Placa}\t{horas}:{minutos}");
+        HorasEstacionado = (DateTime.Now - Entrada).Hours;
+        MinutosEstacionado = (DateTime.Now - Entrada).Minutes;
+    }
+
+    public void MostraTempoEstacionado()
+    {
+        AtualizaTempo();
+        Console.WriteLine($"{Placa}\t{HorasEstacionado}:{MinutosEstacionado}");
+    }
+    
+    public (string, decimal) ProcessaSaida(decimal precoInicial, decimal precoPorHora)
+    {
+        AtualizaTempo();
+        decimal horas = HorasEstacionado + (MinutosEstacionado / 60);
+        return ($"{HorasEstacionado}:{MinutosEstacionado}", precoInicial + (horas * precoPorHora));
     }
 }
