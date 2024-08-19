@@ -11,21 +11,21 @@ namespace DesafioFundamentos.Models
             this.precoInicial = precoInicial;
             this.precoPorHora = precoPorHora;
         }
+        
+        public static string PegaPlaca(string motivo)
+        {
+            Console.WriteLine($"Digite a placa do veículo para {motivo}:");
+            return Console.ReadLine();
+        }
 
         public void AdicionarVeiculo()
         {
-            Console.WriteLine("Digite a placa do veículo para estacionar:");
-            string placa = Console.ReadLine();
-            this.veiculos.Add(placa);
+            this.veiculos.Add(PegaPlaca("estacionar"));
         }
 
         public void RemoverVeiculo()
         {
-            Console.WriteLine("Digite a placa do veículo para remover:");
-
-            // Pedir para o usuário digitar a placa e armazenar na variável placa
-            // *IMPLEMENTE AQUI*
-            string placa = "";
+            string placa = PegaPlaca("remover");
 
             // Verifica se o veículo existe
             if (veiculos.Any(x => x.ToUpper() == placa.ToUpper()))
