@@ -4,7 +4,7 @@ namespace DesafioFundamentos.Models
     {
         private decimal precoInicial = 0;
         private decimal precoPorHora = 0;
-        private List<string> veiculos = new List<string>();
+        private List<Carros> veiculos = new List<Carros>();
 
         public Estacionamento(decimal precoInicial, decimal precoPorHora)
         {
@@ -20,7 +20,8 @@ namespace DesafioFundamentos.Models
 
         public void AdicionarVeiculo()
         {
-            this.veiculos.Add(PegaPlaca("estacionar"));
+            var carro = new Carros(PegaPlaca("adicionar"));
+            veiculos.Add(carro);
         }
 
         public void RemoverVeiculo()
@@ -28,13 +29,13 @@ namespace DesafioFundamentos.Models
             string placa = PegaPlaca("remover");
 
             // Verifica se o veículo existe
-            if (veiculos.Any(x => x.ToUpper() == placa!.ToUpper()))
+            if (veiculos.Any(x => x.Placa.ToUpper() == placa!.ToUpper()))
             {
-                Console.WriteLine("Digite a quantidade de horas que o veículo permaneceu estacionado:");
+                var carro = veiculos.First(x => x.Placa.ToUpper() == placa.ToUpper());
+                var (tempo, valorTotal) = carro.ProcessaSaida(precoInicial, precoPorHora);
+                Console.WriteLine("O veículo permaneceu estacionado por: " + tempo);
 
-                int horas = Convert.ToInt32(Console.ReadLine());
-                decimal valorTotal = precoInicial + (horas * precoPorHora);
-                veiculos.Remove(placa);
+                veiculos.Remove(carro);
 
                 Console.WriteLine($"O veículo {placa} foi removido e o preço total foi de: R$ {valorTotal}");
             }
@@ -52,7 +53,7 @@ namespace DesafioFundamentos.Models
                 Console.WriteLine("Os veículos estacionados são:");
                 foreach (var veiculo in veiculos)
                 {
-                    Console.WriteLine(veiculo);
+                    veiculo.MostraTempoEstacionado();
                 }
             }
             else
